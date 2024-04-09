@@ -11,7 +11,7 @@ const GameCard = ({ game, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="game-card transform overflow-hidden rounded-lg bg-gray-200 shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+      className="game-card transform overflow-hidden rounded-lg  shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
       <img
         src={game.background_image}
