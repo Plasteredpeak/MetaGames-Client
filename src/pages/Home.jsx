@@ -40,7 +40,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="mx-4 my-2">
+    <div className="mx-8 my-4">
       <h1 className="mt-4 text-3xl font-bold text-secondary">All Games</h1>
       <div className="m-4 grid min-h-[90vh] grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 ">
         {isLoading ? (
@@ -62,9 +62,9 @@ export default function Home() {
         )}
       </div>
       {!isLoading && (
-        <div className="m-2 flex items-center justify-center">
+        <div className="my-8 flex items-center justify-center">
           <button
-            className="btn btn-secondary btn-outline"
+            className="btn btn-outline btn-secondary"
             onClick={() => fetchMoreGames()}
           >
             {bottomLoading && <span class="loading loading-spinner"></span>}
