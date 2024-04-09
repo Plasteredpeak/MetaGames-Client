@@ -205,7 +205,7 @@ export default function Home() {
             <GameCard
               key={game.id}
               game={game}
-              onClick={() => navigate(`/game/${game.id}`)}
+              onClick={() => navigate(`/game/${game.id}`, { state: { game } })}
             />
           ))
         )}
