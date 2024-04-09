@@ -1,4 +1,5 @@
 import React from "react";
+import { FaPlus } from "react-icons/fa";
 import {
   FaStar,
   FaStarHalf,
@@ -11,13 +12,16 @@ const GameCard = ({ game, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="game-card transform cursor-pointer overflow-hidden  rounded-lg shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+      className=" game-card transform cursor-pointer overflow-hidden overflow-visible  rounded-lg shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
       <img
         src={game.background_image}
         alt={game.name}
         className="card-image h-48 w-full object-cover"
       />
+      {/* <div className="text-md btn btn-circle btn-primary btn-sm absolute right-0 top-0 -mr-2 -mt-2">
+        <FaPlus />
+      </div> */}
       <div className="card-content p-4">
         <h2 className="card-title mb-2 text-xl font-bold">{game.name}</h2>
         <div className="flex items-center justify-between">
