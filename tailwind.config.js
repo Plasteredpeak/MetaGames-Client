@@ -5,13 +5,13 @@ export default {
     themes: [
       {
         emerald: {
-          primary: "#17A589",
-          "primary-focus": "#1ABC9C",
-          "primary-content": "#f9fafb",
+          primary: "#2bb17d",
+          "primary-focus": "#2fc189",
+          "primary-content": "#F2F3F4",
 
-          secondary: "#154360",
+          secondary: "#0e2a47",
           "secondary-focus": "#1F618D",
-          "secondary-content": "#f9fafb",
+          "secondary-content": "#F2F3F4",
 
           accent: "#ea5234",
           "accent-focus": "#d03516",

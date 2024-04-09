@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
+import { FaCirclePlus } from "react-icons/fa6";
 
 const GamePage = () => {
   const location = useLocation();
@@ -14,7 +15,7 @@ const GamePage = () => {
         <>
           <h1 className="mb-8 text-4xl font-bold">{game.name}</h1>
           <div className="flex flex-wrap items-start justify-between">
-            <div className="w-full p-4 md:w-1/2 lg:w-1/3 xl:w-2/5">
+            <div className="flex w-full flex-col  p-4 md:w-1/2 lg:w-1/3 xl:w-2/5">
               <Carousel
                 arrows
                 responsive={{
@@ -52,8 +53,9 @@ const GamePage = () => {
                   />
                 ))}
               </Carousel>
-              <button className="btn btn-outline btn-primary mt-4">
-                Play Now
+              <button className=" btn btn-outline btn-primary mt-4 w-full self-center">
+                <FaCirclePlus className="mr-2 text-xl" />
+                Add to Cart
               </button>
             </div>
             <div className="w-full p-4 md:w-1/2 lg:w-2/3 xl:w-3/5">
