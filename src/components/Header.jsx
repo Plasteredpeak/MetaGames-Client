@@ -64,7 +64,7 @@ export default function Header() {
 
   return (
     // sticky top-0 z-50 (if i ever want it to be sticky)
-    <header className=" bg-primary-dark">
+    <header className=" bg-secondary">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
@@ -127,7 +127,7 @@ export default function Header() {
                     >
                       <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-700 group-hover:bg-gray-900">
                         <item.icon
-                          className="group-hover:text-secondary-light h-6 w-6 text-gray-300"
+                          className="h-6 w-6 text-gray-300 group-hover:text-primary"
                           aria-hidden="true"
                         />
                       </div>
@@ -176,16 +176,10 @@ export default function Header() {
           </a>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a
-            href="#"
-            className="rounded-md bg-gray-300 px-5 py-2 text-sm font-semibold leading-6 text-black hover:bg-gray-100 "
-          >
+          <a href="#" className="btn">
             Log in
           </a>
-          <a
-            href="#"
-            className="bg-secondary-dark hover:bg-secondary-light ml-4 rounded-md px-5 py-2 text-sm font-semibold leading-6 text-white"
-          >
+          <a href="#" className="btn btn-primary ml-3">
             Sign up
           </a>
         </div>

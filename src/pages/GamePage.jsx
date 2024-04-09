@@ -52,6 +52,9 @@ const GamePage = () => {
                   />
                 ))}
               </Carousel>
+              <button className="btn btn-outline btn-primary mt-4">
+                Play Now
+              </button>
             </div>
             <div className="w-full p-4 md:w-1/2 lg:w-2/3 xl:w-3/5">
               <div className="mb-8">
@@ -99,7 +102,11 @@ const GamePage = () => {
                   {game.stores.map((store) => (
                     <a
                       key={store.id}
-                      href={store.store.domain}
+                      href={
+                        store.store.domain.includes("http")
+                          ? store.store.domain
+                          : "https://" + store.store.domain
+                      }
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-md mb-2 mr-2 rounded-full bg-gray-200 px-3 py-1 hover:bg-gray-300"

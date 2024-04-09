@@ -1,24 +1,48 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-  theme: {
-    extend: {
-      colors: {
-        "primary-light": "#1A5276",
-        "primary-dark": "#0E2A47",
-        "secondary-light": "#239B56",
-        "secondary-dark": "#186A3B",
-      },
-    },
-  },
   plugins: [require("daisyui")],
   daisyui: {
-    themes: ["cupcake"], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
-    darkTheme: "dark", // name of one of the included themes for dark mode
-    base: true, // applies background color and foreground color for root element by default
-    styled: true, // include daisyUI colors and design decisions for all components
-    utils: true, // adds responsive and modifier utility classes
-    prefix: "", // prefix for daisyUI classnames (components, modifiers and responsive class names. Not colors)
-    logs: true, // Shows info about daisyUI version and used config in the console when building your CSS
-    themeRoot: ":root", // The element that receives theme color CSS variables
+    themes: [
+      {
+        emerald: {
+          primary: "#17A589",
+          "primary-focus": "#1ABC9C",
+          "primary-content": "#f9fafb",
+
+          secondary: "#154360",
+          "secondary-focus": "#1F618D",
+          "secondary-content": "#f9fafb",
+
+          accent: "#ea5234",
+          "accent-focus": "#d03516",
+          "accent-content": "#f9fafb",
+
+          neutral: "#333c4d",
+          "neutral-focus": "#1f242e",
+          "neutral-content": "#f9fafb",
+
+          "base-100": "#F2F3F4",
+          "base-200": "#f9fafb",
+          "base-300": "#f0f0f0",
+          "base-content": "#333c4d",
+
+          info: "#1c92f2",
+          success: "#009485",
+          warning: "#ff9900",
+          error: "#ff5724",
+
+          "--rounded-box": "1rem",
+          "--rounded-btn": ".5rem",
+          "--rounded-badge": "1.9rem",
+
+          "--animation-btn": "0",
+          "--animation-input": "0",
+
+          "--btn-text-case": "uppercase",
+          "--navbar-padding": ".5rem",
+          "--border-btn": "1px",
+        },
+      },
+    ],
   },
 };

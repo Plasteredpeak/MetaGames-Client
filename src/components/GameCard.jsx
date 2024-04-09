@@ -11,7 +11,7 @@ const GameCard = ({ game, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="game-card transform overflow-hidden rounded-lg  shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-lg"
+      className="game-card transform cursor-pointer overflow-hidden  rounded-lg shadow-md transition duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
       <img
         src={game.background_image}
@@ -26,7 +26,7 @@ const GameCard = ({ game, onClick }) => {
               <FaStar key={index} className="mr-1 text-lg" />
             ))}
             {game.rating % 1 >= 0.5 && <FaStarHalf className="mr-1" />}
-            <p className="ml-1 text-sm text-primary-dark">{game.rating}/5</p>
+            <p className="ml-1 text-sm text-secondary">{game.rating}/5</p>
           </div>
 
           <div className="card-platforms flex">
@@ -50,7 +50,7 @@ const GameCard = ({ game, onClick }) => {
                     </>
                   )}
                   {platform.platform.slug === "pc" && (
-                    <FaSteam className="mr-1 text-lg text-primary-dark" />
+                    <FaSteam className="mr-1 text-lg text-secondary" />
                   )}
                 </div>
               ));
