@@ -8,7 +8,7 @@ import Footer from "./components/footer";
 
 export default function App() {
   return (
-    <div className="bg-[#EAEDED]">
+    <div>
       <BrowserRouter>
         <Header />
         <Router />
