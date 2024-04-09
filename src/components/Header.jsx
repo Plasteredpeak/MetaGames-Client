@@ -70,7 +70,7 @@ export default function Header() {
         aria-label="Global"
       >
         <div className="max-h-[10vh flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
+          <a href="/home" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
 
             <img
@@ -79,7 +79,6 @@ export default function Header() {
               alt=""
               height={100}
               width={100}
-              onClick={() => navigate(`/home`)}
             />
           </a>
         </div>
@@ -127,7 +126,7 @@ export default function Header() {
                     >
                       <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-700 group-hover:bg-gray-900">
                         <item.icon
-                          className="h-6 w-6 text-gray-300 group-hover:text-primary"
+                          className="h-6 w-6 text-gray-300 group-hover:text-accent"
                           aria-hidden="true"
                         />
                       </div>
@@ -176,10 +175,10 @@ export default function Header() {
           </a>
         </Popover.Group>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" className="btn">
+          <a href="/login" className="btn">
             Log in
           </a>
-          <a href="#" className="btn btn-primary ml-3">
+          <a href="/signup" className="btn btn-accent ml-3">
             Sign up
           </a>
         </div>
@@ -259,13 +258,13 @@ export default function Header() {
               </div>
               <div className="py-6">
                 <a
-                  href="#"
+                  href="/login"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
                 >
                   Log in
                 </a>
                 <a
-                  href="#"
+                  href="/signup"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
                 >
                   Sign up

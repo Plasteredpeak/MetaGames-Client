@@ -13,8 +13,8 @@ export default {
           "secondary-focus": "#1F618D",
           "secondary-content": "#F2F3F4",
 
-          accent: "#ea5234",
-          "accent-focus": "#d03516",
+          accent: "#915efd", // Updated accent color
+          "accent-focus": "#7d3ebd", // Updated accent focus color
           "accent-content": "#f9fafb",
 
           neutral: "#333c4d",
