@@ -11,3 +11,8 @@ export const getGames = async (next) => {
   const response = await axios.get(`${backendUrl}/games`);
   return response.data.data;
 };
+
+export const getGenres = async () => {
+  const response = await axios.get(`${backendUrl}/games/genres`);
+  return response.data.data;
+};

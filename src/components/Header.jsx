@@ -1,7 +1,11 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
+
+import { IoGameControllerOutline } from "react-icons/io5";
+
 import Logo from "../assets/wLogo.png";
+
 import {
   ArrowPathIcon,
   Bars3Icon,
@@ -11,44 +15,132 @@ import {
   SquaresPlusIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
+
 import {
   ChevronDownIcon,
   PhoneIcon,
   PlayCircleIcon,
 } from "@heroicons/react/20/solid";
+import { getGenres } from "../services/igdb.services";
 
 const items = [
   {
-    name: "Analytics",
-    description: "Get a better understanding of your traffic",
+    name: "Action",
+    description: "Action-packed gaming experiences",
     href: "#",
-    icon: ChartPieIcon,
+    icon: IoGameControllerOutline,
   },
   {
-    name: "Engagement",
-    description: "Speak directly to your customers",
+    name: "Indie",
+    description: "Explore unique and creative games",
     href: "#",
-    icon: CursorArrowRaysIcon,
+    icon: IoGameControllerOutline,
   },
   {
-    name: "Security",
-    description: "Your customers’ data will be safe and secure",
+    name: "Adventure",
+    description: "Embark on thrilling journeys and quests",
     href: "#",
-    icon: FingerPrintIcon,
+    icon: IoGameControllerOutline,
   },
   {
-    name: "Integrations",
-    description: "Connect with third-party tools",
+    name: "RPG",
+    description:
+      "Immerse yourself in rich storytelling and character development",
     href: "#",
-    icon: SquaresPlusIcon,
+    icon: IoGameControllerOutline,
   },
   {
-    name: "Automations",
-    description: "Build strategic funnels that will convert",
+    name: "Strategy",
+    description: "Exercise your strategic thinking and planning skills",
     href: "#",
-    icon: ArrowPathIcon,
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Shooter",
+    description: "Get your adrenaline pumping with intense shooting action",
+    href: "#",
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Casual",
+    description: "Relax and unwind with easy-to-play games",
+    href: "#",
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Simulation",
+    description: "Experience real-life scenarios and simulations",
+    href: "#",
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Puzzle",
+    description: "Challenge your mind with brain-teasing puzzles",
+    href: "#",
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Arcade",
+    description: "Enjoy classic arcade-style gaming fun",
+    href: "#",
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Platformer",
+    description: "Leap and run through platforming adventures",
+    href: "#",
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Racing",
+    description: "Speed through thrilling races and competitions",
+    href: "#",
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Massively Multiplayer",
+    description: "Join vast online communities and play with friends",
+    href: "#",
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Sports",
+    description: "Compete in exciting sports challenges and events",
+    href: "#",
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Fighting",
+    description: "Enter the arena and engage in epic battles",
+    href: "#",
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Family",
+    description: "Fun for the whole family to enjoy together",
+    href: "#",
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Board Games",
+    description: "Play classic and modern board games digitally",
+    href: "#",
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Educational",
+    description: "Learn while you play with educational games",
+    href: "#",
+    icon: IoGameControllerOutline,
+  },
+  {
+    name: "Card",
+    description: "Test your skills with card games and collectibles",
+    href: "#",
+    icon: IoGameControllerOutline,
   },
 ];
+
 const callsToAction = [
   { name: "Watch demo", href: "#", icon: PlayCircleIcon },
   { name: "Contact sales", href: "#", icon: PhoneIcon },
@@ -60,7 +152,18 @@ function classNames(...classes) {
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [genres, setGenres] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchGenres = async () => {
+      const genres = await getGenres();
+      setGenres(genres);
+
+      console.log(genres);
+    };
+    fetchGenres();
+  }, []);
 
   return (
     // sticky top-0 z-50 (if i ever want it to be sticky)
@@ -117,8 +220,8 @@ export default function Header() {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-gray-800 shadow-lg ring-1 ring-gray-900/5">
-                <div className="p-4">
+              <Popover.Panel className=" no-scrollbar absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-gray-800 shadow-lg ring-1 ring-gray-900/5">
+                <div className="no-scrollbar max-h-80 overflow-y-auto p-4">
                   {items.map((item) => (
                     <div
                       key={item.name}
