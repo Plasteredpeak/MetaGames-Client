@@ -3,18 +3,12 @@ import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 
 import { IoGameControllerOutline } from "react-icons/io5";
+import { LuSwords } from "react-icons/lu";
+import { GiSwordwoman } from "react-icons/gi";
 
 import Logo from "../assets/wLogo.png";
 
-import {
-  ArrowPathIcon,
-  Bars3Icon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import {
   ChevronDownIcon,
@@ -28,19 +22,13 @@ const items = [
     name: "Action",
     description: "Action-packed gaming experiences",
     href: "#",
-    icon: IoGameControllerOutline,
-  },
-  {
-    name: "Indie",
-    description: "Explore unique and creative games",
-    href: "#",
-    icon: IoGameControllerOutline,
+    icon: LuSwords,
   },
   {
     name: "Adventure",
     description: "Embark on thrilling journeys and quests",
     href: "#",
-    icon: IoGameControllerOutline,
+    icon: GiSwordwoman,
   },
   {
     name: "RPG",
@@ -80,44 +68,14 @@ const items = [
     icon: IoGameControllerOutline,
   },
   {
-    name: "Arcade",
-    description: "Enjoy classic arcade-style gaming fun",
-    href: "#",
-    icon: IoGameControllerOutline,
-  },
-  {
-    name: "Platformer",
-    description: "Leap and run through platforming adventures",
-    href: "#",
-    icon: IoGameControllerOutline,
-  },
-  {
     name: "Racing",
     description: "Speed through thrilling races and competitions",
     href: "#",
     icon: IoGameControllerOutline,
   },
   {
-    name: "Massively Multiplayer",
-    description: "Join vast online communities and play with friends",
-    href: "#",
-    icon: IoGameControllerOutline,
-  },
-  {
     name: "Sports",
     description: "Compete in exciting sports challenges and events",
-    href: "#",
-    icon: IoGameControllerOutline,
-  },
-  {
-    name: "Fighting",
-    description: "Enter the arena and engage in epic battles",
-    href: "#",
-    icon: IoGameControllerOutline,
-  },
-  {
-    name: "Family",
-    description: "Fun for the whole family to enjoy together",
     href: "#",
     icon: IoGameControllerOutline,
   },
@@ -130,12 +88,6 @@ const items = [
   {
     name: "Educational",
     description: "Learn while you play with educational games",
-    href: "#",
-    icon: IoGameControllerOutline,
-  },
-  {
-    name: "Card",
-    description: "Test your skills with card games and collectibles",
     href: "#",
     icon: IoGameControllerOutline,
   },
@@ -204,7 +156,7 @@ export default function Header() {
           </a>
           <Popover className="relative">
             <Popover.Button className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-300  hover:text-gray-100">
-              Product
+              Category
               <ChevronDownIcon
                 className="h-5 w-5 flex-none text-gray-300  hover:text-gray-100"
                 aria-hidden="true"
@@ -221,7 +173,7 @@ export default function Header() {
               leaveTo="opacity-0 translate-y-1"
             >
               <Popover.Panel className=" no-scrollbar absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-gray-800 shadow-lg ring-1 ring-gray-900/5">
-                <div className="no-scrollbar max-h-80 overflow-y-auto p-4">
+                <div className="no-scrollbar max-h-96 overflow-y-auto p-4">
                   {items.map((item) => (
                     <div
                       key={item.name}
@@ -321,7 +273,7 @@ export default function Header() {
                   {({ open }) => (
                     <>
                       <Disclosure.Button className="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700">
-                        Product
+                        Category
                         <ChevronDownIcon
                           className={classNames(
                             open ? "rotate-180" : "",
