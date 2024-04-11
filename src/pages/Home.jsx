@@ -32,10 +32,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchGames();
-  }, []);
-
-  useEffect(() => {
     const search = async () => {
       setIsLoading(true);
       if (searchQuery === "") {

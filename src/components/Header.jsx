@@ -2,13 +2,15 @@ import { Fragment, useEffect, useState } from "react";
 import { Dialog, Disclosure, Popover, Transition } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
 
-import { IoGameControllerOutline } from "react-icons/io5";
+import { IoExtensionPuzzleSharp } from "react-icons/io5";
 import { LuSwords } from "react-icons/lu";
-import { GiSwordwoman } from "react-icons/gi";
+import { GiAncientSword, GiPistolGun, GiSwordwoman } from "react-icons/gi";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import { FaChess, FaDice, FaGraduationCap, FaPlane } from "react-icons/fa";
+import { BiSolidCarCrash, BiSolidGame } from "react-icons/bi";
+import { MdSportsCricket } from "react-icons/md";
 
 import Logo from "../assets/wLogo.png";
-
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import {
   ChevronDownIcon,
@@ -35,61 +37,61 @@ const items = [
     description:
       "Immerse yourself in rich storytelling and character development",
     href: "/game/role-playing-games-rpg",
-    icon: IoGameControllerOutline,
+    icon: GiAncientSword,
   },
   {
     name: "Strategy",
     description: "Exercise your strategic thinking and planning skills",
     href: "/game/strategy",
-    icon: IoGameControllerOutline,
+    icon: FaChess,
   },
   {
     name: "Shooter",
     description: "Get your adrenaline pumping with intense shooting action",
     href: "/game/shooter",
-    icon: IoGameControllerOutline,
+    icon: GiPistolGun,
   },
   {
     name: "Casual",
     description: "Relax and unwind with easy-to-play games",
     href: "/game/casual",
-    icon: IoGameControllerOutline,
+    icon: BiSolidGame,
   },
   {
     name: "Simulation",
     description: "Experience real-life scenarios and simulations",
     href: "/game/simulation",
-    icon: IoGameControllerOutline,
+    icon: FaPlane,
   },
   {
     name: "Puzzle",
     description: "Challenge your mind with brain-teasing puzzles",
     href: "/game/puzzle",
-    icon: IoGameControllerOutline,
+    icon: IoExtensionPuzzleSharp,
   },
   {
     name: "Racing",
     description: "Speed through thrilling races and competitions",
     href: "/game/racing",
-    icon: IoGameControllerOutline,
+    icon: BiSolidCarCrash,
   },
   {
     name: "Sports",
     description: "Compete in exciting sports challenges and events",
     href: "/game/sports",
-    icon: IoGameControllerOutline,
+    icon: MdSportsCricket,
   },
   {
     name: "Board Games",
     description: "Play classic and modern board games digitally",
     href: "/game/board-games",
-    icon: IoGameControllerOutline,
+    icon: FaDice,
   },
   {
     name: "Educational",
     description: "Learn while you play with educational games",
     href: "/game/educational",
-    icon: IoGameControllerOutline,
+    icon: FaGraduationCap,
   },
 ];
 

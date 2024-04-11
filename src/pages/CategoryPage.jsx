@@ -12,8 +12,6 @@ export default function Category(params) {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
 
-  console.log(params.genre);
-
   const fetchGames = async () => {
     setIsLoading(true);
     const gameResults = await getGamesByGenre(params.genre);
@@ -32,10 +30,6 @@ export default function Category(params) {
       setBottomLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchGames();
-  }, []);
 
   useEffect(() => {
     const search = async () => {
