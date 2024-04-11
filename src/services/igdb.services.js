@@ -12,6 +12,19 @@ export const getGames = async (next) => {
   return response.data.data;
 };
 
+export const getGamesByGenre = async (genre) => {
+  const response = await axios.get(`${backendUrl}/games/?genres=${genre}`);
+  return response.data.data;
+};
+
+export const searchGamesByGenre = async (genre, queryString) => {
+  console.log("searching for games", queryString);
+  const response = await axios.get(
+    `${backendUrl}/games?genres=${genre}&search=${queryString}`,
+  );
+  return response.data.data;
+};
+
 export const getGenres = async () => {
   const response = await axios.get(`${backendUrl}/games/genres`);
   return response.data.data;

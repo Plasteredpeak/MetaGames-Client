@@ -21,74 +21,74 @@ const items = [
   {
     name: "Action",
     description: "Action-packed gaming experiences",
-    href: "#",
+    href: "/game/action",
     icon: LuSwords,
   },
   {
     name: "Adventure",
     description: "Embark on thrilling journeys and quests",
-    href: "#",
+    href: "/game/adventure",
     icon: GiSwordwoman,
   },
   {
     name: "RPG",
     description:
       "Immerse yourself in rich storytelling and character development",
-    href: "#",
+    href: "/game/role-playing-games-rpg",
     icon: IoGameControllerOutline,
   },
   {
     name: "Strategy",
     description: "Exercise your strategic thinking and planning skills",
-    href: "#",
+    href: "/game/strategy",
     icon: IoGameControllerOutline,
   },
   {
     name: "Shooter",
     description: "Get your adrenaline pumping with intense shooting action",
-    href: "#",
+    href: "/game/shooter",
     icon: IoGameControllerOutline,
   },
   {
     name: "Casual",
     description: "Relax and unwind with easy-to-play games",
-    href: "#",
+    href: "/game/casual",
     icon: IoGameControllerOutline,
   },
   {
     name: "Simulation",
     description: "Experience real-life scenarios and simulations",
-    href: "#",
+    href: "/game/simulation",
     icon: IoGameControllerOutline,
   },
   {
     name: "Puzzle",
     description: "Challenge your mind with brain-teasing puzzles",
-    href: "#",
+    href: "/game/puzzle",
     icon: IoGameControllerOutline,
   },
   {
     name: "Racing",
     description: "Speed through thrilling races and competitions",
-    href: "#",
+    href: "/game/racing",
     icon: IoGameControllerOutline,
   },
   {
     name: "Sports",
     description: "Compete in exciting sports challenges and events",
-    href: "#",
+    href: "/game/sports",
     icon: IoGameControllerOutline,
   },
   {
     name: "Board Games",
     description: "Play classic and modern board games digitally",
-    href: "#",
+    href: "/game/board-games",
     icon: IoGameControllerOutline,
   },
   {
     name: "Educational",
     description: "Learn while you play with educational games",
-    href: "#",
+    href: "/game/educational",
     icon: IoGameControllerOutline,
   },
 ];
@@ -172,8 +172,8 @@ export default function Header() {
               leaveFrom="opacity-100 translate-y-0"
               leaveTo="opacity-0 translate-y-1"
             >
-              <Popover.Panel className=" no-scrollbar absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-gray-800 shadow-lg ring-1 ring-gray-900/5">
-                <div className="no-scrollbar max-h-96 overflow-y-auto p-4">
+              <Popover.Panel className=" absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-gray-800 shadow-lg ring-1 ring-gray-900/5 no-scrollbar">
+                <div className="max-h-96 overflow-y-auto p-4 no-scrollbar">
                   {items.map((item) => (
                     <div
                       key={item.name}

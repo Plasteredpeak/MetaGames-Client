@@ -4,6 +4,22 @@ import Home from "../pages/Home";
 import GamePage from "../pages/GamePage";
 import SignUp from "../pages/Auth/SignUp";
 import Login from "../pages/Auth/Login";
+import Category from "../pages/CategoryPage";
+
+const categories = [
+  "action",
+  "adventure",
+  "role-playing-games-rpg",
+  "strategy",
+  "shooter",
+  "casual",
+  "simulation",
+  "puzzle",
+  "racing",
+  "sports",
+  "board-games",
+  "educational",
+];
 
 const authRoutes = [
   { path: "/signup", element: <SignUp /> },
@@ -15,6 +31,10 @@ const routes = [
   { path: "*", element: <Navigate to="/home" replace /> },
   { path: "/home", element: <Home /> },
   { path: "/game/:id", element: <GamePage /> },
+  ...categories.map((category) => ({
+    path: `/game/${category}`,
+    element: <Category genre={category} />,
+  })),
 ];
 
 const Router = () => {
