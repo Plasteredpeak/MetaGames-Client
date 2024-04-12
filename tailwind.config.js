@@ -45,8 +45,8 @@ export default {
 
           info: "#1c92f2",
           success: "#58d68d",
-          warning: "#ff9900",
-          error: "#ff5724",
+          warning: "#f4d03f",
+          error: "#E74C3C",
 
           "--rounded-box": "1rem",
           "--rounded-btn": ".5rem",

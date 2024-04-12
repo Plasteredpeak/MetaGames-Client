@@ -6,38 +6,45 @@ import { MdEmail } from "react-icons/md";
 import metaMask from "../../assets/metaMask.svg";
 import Logo from "../../assets/wLogo.png";
 import { CiCircleCheck } from "react-icons/ci";
+import { redirect } from "react-router-dom";
 
 const Login = () => {
-  const [connected, setConnected] = useState(false);
+  const [connectedAccount, setConnectedAccount] = useState();
+
+  //check if metamask is connected
+  useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", function (accounts) {
+        if (accounts.length > 0) {
+          setConnectedAccount(accounts[0]);
+          localStorage.setItem("userAddress", accounts[0]);
+          window.location.href = "/home";
+        } else {
+          localStorage.removeItem("userAddress");
+        }
+      });
+    }
+  }, []);
 
   const connectToMetaMask = async () => {
     if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      try {
-        // Request account access if needed
-        const accounts = await window.ethereum.enable();
-        // Save user address in browser for session management
-        localStorage.setItem("userAddress", accounts[0]);
+      // instantiate Web3 with the injected provider
+      const web3 = new Web3(window.ethereum);
 
-        setConnected(true);
+      //request user to connect accounts (Metamask will prompt)
+      await window.ethereum.request({ method: "eth_requestAccounts" });
 
-        window.location.href = "/home";
-      } catch (error) {
-        // User denied account access...
-        console.log("User denied account access");
-      }
-    } else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider);
-      // Save user address in browser for session management
-      localStorage.setItem("userAddress", window.web3.eth.defaultAccount);
+      //get the connected accounts
+      const accounts = await web3.eth.getAccounts();
 
-      setConnected(true);
+      console.log(accounts[0]);
 
+      //show the first connected account in the react page
+      setConnectedAccount(accounts[0]);
+      localStorage.setItem("userAddress", accounts[0]);
       window.location.href = "/home";
     } else {
-      console.log(
-        "Non-Ethereum browser detected. You should consider trying MetaMask!",
-      );
+      alert("Please download metamask");
     }
   };
 
@@ -45,7 +52,7 @@ const Login = () => {
     <div className="flex min-h-[80vh] flex-col items-center justify-center">
       <div
         role="alert"
-        className={`alert alert-success my-3 w-1/3 ${connected ? "" : "hidden"}`}
+        className={`alert alert-success my-3 w-1/3 ${connectedAccount ? "" : "hidden"}`}
       >
         <CiCircleCheck className="text-5xl" />
         <div className="mx-2">

@@ -10,6 +10,8 @@ import { FaChess, FaDice, FaGraduationCap, FaPlane } from "react-icons/fa";
 import { BiSolidCarCrash, BiSolidGame } from "react-icons/bi";
 import { MdSportsCricket } from "react-icons/md";
 
+import Web3 from "web3";
+
 import Logo from "../assets/wLogo.png";
 
 import {
@@ -105,7 +107,28 @@ function classNames(...classes) {
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [connectedAccount, setConnectedAccount] = useState(false);
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("userAddress")) {
+      setConnectedAccount(true);
+      userBalance();
+    }
+  }, []);
+
+  const userBalance = async () => {
+    if (window.ethereum) {
+      const web3 = new Web3(window.ethereum);
+      const accounts = await web3.eth.getAccounts();
+      const balance = await web3.eth.getBalance(accounts[0]);
+      const balanceInEther = web3.utils.fromWei(balance, "ether");
+      setUser({ address: accounts[0], balance: balanceInEther });
+    }
+  };
+
+  //check aut using userAddress in localStorage
 
   return (
     // sticky top-0 z-50 (if i ever want it to be sticky)
@@ -210,22 +233,55 @@ export default function Header() {
             href="#"
             className="text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100"
           >
-            Marketplace
-          </a>
-          <a
-            href="#"
-            className="text-sm font-semibold leading-6 text-gray-300  hover:text-gray-100"
-          >
-            Company
+            Cart
           </a>
         </Popover.Group>
+
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="/login" className="btn">
-            Log in
-          </a>
-          <a href="/signup" className="btn btn-accent ml-3">
-            Sign up
-          </a>
+          {!connectedAccount ? (
+            <>
+              <a href="/login" className="btn">
+                Log in
+              </a>
+              <a href="/signup" className="btn btn-accent ml-3">
+                Sign up
+              </a>
+            </>
+          ) : (
+            <>
+              <div className="dropdown dropdown-end dropdown-hover">
+                <div
+                  tabIndex={0}
+                  role="button"
+                  className="btn btn-ghost text-white"
+                >
+                  <span>My Account</span>
+                  <ChevronDownIcon
+                    className="h-5 w-5 flex-none"
+                    aria-hidden="true"
+                  />
+                </div>
+                <div
+                  tabIndex={0}
+                  className="card dropdown-content card-compact z-[100] bg-base-100 p-2 shadow"
+                >
+                  <div className="card-body">
+                    <p className="font-bold">{user?.address || ""}</p>
+                    <p>Balance: {user?.balance || 0} ETH</p>
+                  </div>
+                </div>
+              </div>
+              <button
+                className="btn btn-error text-white"
+                onClick={() => {
+                  localStorage.removeItem("userAddress");
+                  window.location.href = "/home";
+                }}
+              >
+                Log out
+              </button>
+            </>
+          )}
         </div>
       </nav>
       <Dialog
@@ -292,13 +348,7 @@ export default function Header() {
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
                 >
-                  Marketplace
-                </a>
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
-                >
-                  Company
+                  Cart
                 </a>
               </div>
               <div className="py-6">
