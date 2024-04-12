@@ -17,7 +17,6 @@ import {
   PhoneIcon,
   PlayCircleIcon,
 } from "@heroicons/react/20/solid";
-import { getGenres } from "../services/igdb.services";
 
 const items = [
   {
@@ -106,18 +105,7 @@ function classNames(...classes) {
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [genres, setGenres] = useState([]);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchGenres = async () => {
-      const genres = await getGenres();
-      setGenres(genres);
-
-      console.log(genres);
-    };
-    fetchGenres();
-  }, []);
 
   return (
     // sticky top-0 z-50 (if i ever want it to be sticky)
