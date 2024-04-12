@@ -142,7 +142,7 @@ export default function Header() {
             <span className="sr-only">Your Company</span>
 
             <img
-              className=" rounded-sm"
+              className="rounded-sm"
               src={Logo}
               alt=""
               height={100}
@@ -292,19 +292,17 @@ export default function Header() {
       >
         <div className="fixed inset-0 z-10" />
         <Dialog.Panel className="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-gray-800 px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-          <div className="flex items-center justify-between">
-            <a href="#" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
-              <img className="h-8 w-auto" src={Logo} alt="" />
-            </a>
+          <div className="flex flex-col items-center">
             <button
               type="button"
-              className="-m-2.5 rounded-md p-2.5 text-gray-300"
+              className="fixed right-0 -mt-2 mr-2 text-gray-300"
               onClick={() => setMobileMenuOpen(false)}
             >
               <span className="sr-only">Close menu</span>
               <XMarkIcon className="h-6 w-6" aria-hidden="true" />
             </button>
+
+            <img className="h-40" src={Logo} alt="" />
           </div>
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
@@ -351,19 +349,34 @@ export default function Header() {
                   Cart
                 </a>
               </div>
-              <div className="py-6">
-                <a
-                  href="/login"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
-                >
-                  Log in
-                </a>
-                <a
-                  href="/signup"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
-                >
-                  Sign up
-                </a>
+
+              <div className="">
+                {!connectedAccount ? (
+                  <>
+                    <a
+                      href="/login"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
+                    >
+                      Log in
+                    </a>
+                    <a
+                      href="/signup"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
+                    >
+                      Sign up
+                    </a>
+                  </>
+                ) : (
+                  <a
+                    onClick={() => {
+                      localStorage.removeItem("userAddress");
+                      window.location.href = "/home";
+                    }}
+                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
+                  >
+                    Log out
+                  </a>
+                )}
               </div>
             </div>
           </div>
