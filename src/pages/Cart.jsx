@@ -84,7 +84,7 @@ const Cart = () => {
                       </td>
                       <td className="border px-4 py-2 text-center">
                         <button
-                          className="btn btn-error btn-sm text-white"
+                          className="btn btn-error btn-sm text-gray-100"
                           onClick={() => removeFromCart(game.id)}
                         >
                           <FaTrashAlt />

@@ -22,6 +22,7 @@ const GamePage = () => {
     if (!isGameAlreadyAdded) {
       games.push(game);
       localStorage.setItem("cart", JSON.stringify(games));
+      window.dispatchEvent(new Event("cartUpdated"));
       toast.success(`${game.name} added to cart`);
     } else {
       toast.error(`${game.name} is already in cart`);

@@ -109,6 +109,7 @@ export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [connectedAccount, setConnectedAccount] = useState(false);
   const [user, setUser] = useState(null);
+  const [cartHasItems, setCartHasItems] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -116,6 +117,30 @@ export default function Header() {
       setConnectedAccount(true);
       userBalance();
     }
+  }, []);
+
+  useEffect(() => {
+    const handleCartUpdate = () => {
+      if (localStorage.getItem("cart")) {
+        const cart = JSON.parse(localStorage.getItem("cart"));
+        console.log(cart.length);
+        if (cart.length > 0) {
+          setCartHasItems(true);
+        } else {
+          setCartHasItems(false);
+        }
+      } else {
+        setCartHasItems(false);
+      }
+    };
+
+    // Listen for custom event
+    window.addEventListener("cartUpdated", handleCartUpdate);
+
+    // Cleanup event listener
+    return () => {
+      window.removeEventListener("cartUpdated", handleCartUpdate);
+    };
   }, []);
 
   const userBalance = async () => {
@@ -228,9 +253,12 @@ export default function Header() {
           </Popover>
           <a
             href="/cart"
-            className="text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100"
+            className=" relative text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100"
           >
             Cart
+            {cartHasItems && (
+              <span className="absolute right-0 top-0 -mr-2 h-2 w-2 animate-pulse  rounded-full bg-red-500"></span>
+            )}
           </a>
           <a
             href="#"
