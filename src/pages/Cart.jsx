@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { toast } from "react-toastify";
+import Web3 from "web3";
+import { gameABI } from "../utils/contract.abi";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   const getCart = () => {
     let games = JSON.parse(localStorage.getItem("cart")) || [];
@@ -44,6 +48,42 @@ const Cart = () => {
 
     setTotal(parseFloat(total.toFixed(2)));
   }, [cart]);
+
+  const buyGame = async () => {
+    setLoading(true);
+    const web3 = new Web3(window.ethereum);
+    try {
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+
+      const contractAddress = import.meta.env.VITE_GAME_CONTRACT_ADDRESS;
+
+      const contract = new web3.eth.Contract(gameABI, contractAddress);
+
+      const accounts = await web3.eth.getAccounts();
+      const account = accounts[0];
+
+      for (const game of cart) {
+        try {
+          await contract.methods
+            .addGame(game.id.toString(), game.name, game.price.toString())
+            .send({
+              from: account,
+            });
+          console.log(game.id);
+          removeFromCart(game.id);
+          toast.success(`Game ${game.id} added successfully`);
+        } catch (error) {
+          console.error(`Failed to add game ${game.id}:`, error);
+          toast.error(`Failed to add game ${game.id}`);
+        }
+      }
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Failed to enable Ethereum:", error);
+      toast.error("Failed to enable Ethereum");
+    }
+  };
 
   return (
     <>
@@ -105,6 +145,12 @@ const Cart = () => {
                   </tr>
                 </tfoot>
               </table>
+            </div>
+            <div className="flex w-full justify-center">
+              <button className="btn btn-primary mt-4" onClick={buyGame}>
+                {loading && <span className="loading loading-spinner"></span>}
+                Buy Games
+              </button>
             </div>
           </div>
         </div>

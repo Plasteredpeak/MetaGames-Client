@@ -35,3 +35,8 @@ export const searchGames = async (queryString) => {
   const response = await axios.get(`${backendUrl}/games?search=${queryString}`);
   return response.data.data;
 };
+
+export const getGameById = async (id) => {
+  const response = await axios.get(`${backendUrl}/games/${id}`);
+  return response.data.data;
+};
