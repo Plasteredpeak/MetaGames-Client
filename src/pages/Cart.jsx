@@ -1,14 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
 import { toast } from "react-toastify";
 import Web3 from "web3";
-import { gameABI } from "../utils/contract.abi";
+import { gameABI, tokenABI } from "../utils/contract.abi";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
+
+  const addTokens = async () => {
+    if (window.ethereum) {
+      try {
+        const web3 = new Web3(window.ethereum);
+        const accounts = await web3.eth.getAccounts();
+
+        const contractAddress = import.meta.env.VITE_TOKEN_CONTRACT_ADDRESS;
+        const ownerAddress = import.meta.env.VITE_OWNER_ADDRESS;
+
+        const contract = new web3.eth.Contract(tokenABI, contractAddress);
+
+        //transfer 100 tokens to the user from the owner
+        await contract.methods
+          .transferTokens(ownerAddress, accounts[0], 100)
+          .send({
+            from: ownerAddress,
+          });
+
+        toast.success("You have received a 100 GT tokens. ");
+      } catch (error) {
+        console.error("Failed to enable Ethereum:", error);
+        toast.error("Failed to enable Ethereum");
+      }
+    }
+  };
 
   const getCart = () => {
     let games = JSON.parse(localStorage.getItem("cart")) || [];
@@ -24,10 +49,10 @@ const Cart = () => {
 
   const calculatePrice = (playtime, rating) => {
     const basePricePerHour = 0.01;
-    const playtimeFactor = playtime * basePricePerHour;
-    const ratingFactor = rating * (basePricePerHour * 5);
+    const playtimeFactor = Math.floor(playtime * basePricePerHour);
+    const ratingFactor = Math.floor(rating * (basePricePerHour * 100));
     const totalPrice = playtimeFactor + ratingFactor;
-    return parseFloat(totalPrice.toFixed(2));
+    return totalPrice;
   };
 
   const removeFromCart = (id) => {
@@ -49,10 +74,41 @@ const Cart = () => {
     setTotal(parseFloat(total.toFixed(2)));
   }, [cart]);
 
+  const getPayment = async () => {
+    if (window.ethereum) {
+      try {
+        const web3 = new Web3(window.ethereum);
+        const accounts = await web3.eth.getAccounts();
+
+        const contractAddress = import.meta.env.VITE_TOKEN_CONTRACT_ADDRESS;
+        const ownerAddress = import.meta.env.VITE_OWNER_ADDRESS;
+
+        const contract = new web3.eth.Contract(tokenABI, contractAddress);
+
+        await contract.methods
+          .transferTokens(accounts[0], ownerAddress, total)
+          .send({
+            from: accounts[0],
+          });
+
+        toast.success(`Payment of ${total} GT tokens successful`);
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+  };
+
   const buyGame = async () => {
     setLoading(true);
     const web3 = new Web3(window.ethereum);
     try {
+      const paid = await getPayment();
+      if (!paid) {
+        toast.error("Payment failed");
+        setLoading(false);
+        return;
+      }
       await window.ethereum.request({ method: "eth_requestAccounts" });
 
       const contractAddress = import.meta.env.VITE_GAME_CONTRACT_ADDRESS;
@@ -147,6 +203,12 @@ const Cart = () => {
               </table>
             </div>
             <div className="flex w-full justify-center">
+              <button
+                className="btn btn-secondary mr-2 mt-4"
+                onClick={addTokens}
+              >
+                Get Free Tokens
+              </button>
               <button className="btn btn-primary mt-4" onClick={buyGame}>
                 {loading && <span className="loading loading-spinner"></span>}
                 Buy Games

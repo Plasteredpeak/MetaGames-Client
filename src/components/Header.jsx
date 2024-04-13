@@ -19,6 +19,7 @@ import {
   PhoneIcon,
   PlayCircleIcon,
 } from "@heroicons/react/20/solid";
+import { tokenABI } from "../utils/contract.abi";
 
 const items = [
   {
@@ -147,8 +148,15 @@ export default function Header() {
     if (window.ethereum) {
       const web3 = new Web3(window.ethereum);
       const accounts = await web3.eth.getAccounts();
-      const balance = await web3.eth.getBalance(accounts[0]);
+
+      const contractAddress = import.meta.env.VITE_TOKEN_CONTRACT_ADDRESS;
+
+      const contract = new web3.eth.Contract(tokenABI, contractAddress);
+
+      const balance = await contract.methods.balanceOf(accounts[0]).call();
+
       const balanceInEther = web3.utils.fromWei(balance, "ether");
+
       setUser({ address: accounts[0], balance: balanceInEther });
     }
   };
@@ -298,7 +306,7 @@ export default function Header() {
                 >
                   <div className="card-body">
                     <p className="font-bold">{user?.address || ""}</p>
-                    <p>Balance: {user?.balance || 0} ETH</p>
+                    <p>Balance: {user?.balance || 0} GT</p>
                   </div>
                 </div>
               </div>

@@ -7,10 +7,19 @@ import { FaCirclePlus } from "react-icons/fa6";
 import { toast } from "react-toastify";
 import { BsCartCheckFill } from "react-icons/bs";
 
+import { useNavigate } from "react-router-dom";
+
+import Web3 from "web3";
+
+import { gameABI } from "../utils/contract.abi";
+import { RiListCheck3 } from "react-icons/ri";
+
 const GamePage = () => {
   const location = useLocation();
   const game = location.state?.game;
   const [inCart, setInCart] = useState(false);
+  const [alreadyPurchased, setAlreadyPurchased] = useState(false);
+  const navigate = useNavigate();
 
   const addToCart = () => {
     if (!localStorage.getItem("userAddress")) {
@@ -24,6 +33,7 @@ const GamePage = () => {
       localStorage.setItem("cart", JSON.stringify(games));
       window.dispatchEvent(new Event("cartUpdated"));
       toast.success(`${game.name} added to cart`);
+      setInCart(true);
     } else {
       toast.error(`${game.name} is already in cart`);
     }
@@ -34,6 +44,31 @@ const GamePage = () => {
     const isGameAlreadyAdded = games.some((g) => g.id === game.id);
     setInCart(isGameAlreadyAdded);
   }, [game]);
+
+  useEffect(() => {
+    checkIfAlreadyPurchased();
+  }, []);
+
+  const goToCart = () => {
+    navigate("/cart");
+  };
+
+  const checkIfAlreadyPurchased = async () => {
+    if (!localStorage.getItem("userAddress")) {
+      setAlreadyPurchased(false);
+      return;
+    }
+    const web3 = new Web3(window.ethereum);
+    await window.ethereum.request({ method: "eth_requestAccounts" });
+    const contractAddress = import.meta.env.VITE_GAME_CONTRACT_ADDRESS;
+    const contract = new web3.eth.Contract(gameABI, contractAddress);
+    const accounts = await web3.eth.getAccounts();
+    const games = await contract.methods.getGamesByOwner(accounts[0]).call();
+    const gamesArray = games[0];
+    console.log(gamesArray, game.id, gamesArray.includes(game.id));
+    const isGameAlreadyPurchased = gamesArray.includes(game.id.toString());
+    setAlreadyPurchased(isGameAlreadyPurchased);
+  };
 
   return (
     <div className="mx-10 min-h-[90vh] py-8">
@@ -82,22 +117,34 @@ const GamePage = () => {
                     ))}
                   </Carousel>
                 )}
-              <button
-                className={`btn btn-primary  mt-4 w-full self-center ${!inCart ? "btn-outline" : ""}`}
-                onClick={addToCart}
-              >
-                {inCart ? (
-                  <>
-                    <BsCartCheckFill className="mr-1 text-lg" />
-                    In Cart
-                  </>
-                ) : (
-                  <>
-                    <FaCirclePlus className="mr-2 text-xl" />
-                    Add to Cart
-                  </>
-                )}
-              </button>
+              {alreadyPurchased ? (
+                <>
+                  <button
+                    className={`btn btn-outline btn-secondary  mt-4 w-full self-center`}
+                    onClick={() => navigate("/my-games")}
+                  >
+                    <RiListCheck3 className="text-xl" />
+                    go to library
+                  </button>
+                </>
+              ) : (
+                <button
+                  className={`btn btn-primary  mt-4 w-full self-center ${!inCart ? "btn-outline" : ""}`}
+                  onClick={inCart ? goToCart : addToCart}
+                >
+                  {inCart ? (
+                    <>
+                      <BsCartCheckFill className="mr-1 text-lg" />
+                      In Cart
+                    </>
+                  ) : (
+                    <>
+                      <FaCirclePlus className="mr-2 text-xl" />
+                      Add to Cart
+                    </>
+                  )}
+                </button>
+              )}
             </div>
             <div className="w-full p-4 md:w-1/2 lg:w-2/3 xl:w-3/5">
               <div className="mb-8">

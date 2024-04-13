@@ -68,13 +68,15 @@ export default function Home() {
           <div className="col-span-4 flex items-center justify-center">
             <Loader />
           </div>
-        ) : games.length === 0 ? (
+        ) : games?.length === 0 ||
+          games?.results === undefined ||
+          games?.results.length === 0 ? (
           <div className="flex h-48 items-center justify-center">
             <p>No games found.</p>
           </div>
         ) : (
           <>
-            {games.results.map((game) => (
+            {games?.results.map((game) => (
               <GameCard
                 key={game.id}
                 game={game}
