@@ -1,13 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { FaCirclePlus } from "react-icons/fa6";
 
+import { toast } from "react-toastify";
+import { BsCartCheckFill } from "react-icons/bs";
+
 const GamePage = () => {
   const location = useLocation();
   const game = location.state?.game;
-  console.log(game);
+  const [inCart, setInCart] = useState(false);
+
+  const addToCart = () => {
+    if (!localStorage.getItem("userAddress")) {
+      toast.error("Please login to add games to cart");
+      return;
+    }
+    let games = JSON.parse(localStorage.getItem("cart")) || [];
+    const isGameAlreadyAdded = games.some((g) => g.id === game.id);
+    if (!isGameAlreadyAdded) {
+      games.push(game);
+      localStorage.setItem("cart", JSON.stringify(games));
+      toast.success(`${game.name} added to cart`);
+    } else {
+      toast.error(`${game.name} is already in cart`);
+    }
+  };
+
+  useEffect(() => {
+    const games = JSON.parse(localStorage.getItem("cart")) || [];
+    const isGameAlreadyAdded = games.some((g) => g.id === game.id);
+    setInCart(isGameAlreadyAdded);
+  }, [game]);
 
   return (
     <div className="mx-10 min-h-[90vh] py-8">
@@ -56,9 +81,21 @@ const GamePage = () => {
                     ))}
                   </Carousel>
                 )}
-              <button className=" btn btn-outline btn-primary mt-4 w-full self-center">
-                <FaCirclePlus className="mr-2 text-xl" />
-                Add to Cart
+              <button
+                className={`btn btn-primary  mt-4 w-full self-center ${!inCart ? "btn-outline" : ""}`}
+                onClick={addToCart}
+              >
+                {inCart ? (
+                  <>
+                    <BsCartCheckFill className="mr-1 text-lg" />
+                    In Cart
+                  </>
+                ) : (
+                  <>
+                    <FaCirclePlus className="mr-2 text-xl" />
+                    Add to Cart
+                  </>
+                )}
               </button>
             </div>
             <div className="w-full p-4 md:w-1/2 lg:w-2/3 xl:w-3/5">

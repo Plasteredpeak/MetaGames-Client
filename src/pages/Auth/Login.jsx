@@ -6,7 +6,6 @@ import { MdEmail } from "react-icons/md";
 import metaMask from "../../assets/metaMask.svg";
 import Logo from "../../assets/wLogo.png";
 import { CiCircleCheck } from "react-icons/ci";
-import { redirect } from "react-router-dom";
 
 const Login = () => {
   const [connectedAccount, setConnectedAccount] = useState();
@@ -28,21 +27,25 @@ const Login = () => {
 
   const connectToMetaMask = async () => {
     if (window.ethereum) {
-      // instantiate Web3 with the injected provider
-      const web3 = new Web3(window.ethereum);
+      try {
+        // instantiate Web3 with the injected provider
+        const web3 = new Web3(window.ethereum);
 
-      //request user to connect accounts (Metamask will prompt)
-      await window.ethereum.request({ method: "eth_requestAccounts" });
+        //request user to connect accounts (Metamask will prompt)
+        await window.ethereum.request({ method: "eth_requestAccounts" });
 
-      //get the connected accounts
-      const accounts = await web3.eth.getAccounts();
+        //get the connected accounts
+        const accounts = await web3.eth.getAccounts();
 
-      console.log(accounts[0]);
+        console.log(accounts[0]);
 
-      //show the first connected account in the react page
-      setConnectedAccount(accounts[0]);
-      localStorage.setItem("userAddress", accounts[0]);
-      window.location.href = "/home";
+        //show the first connected account in the react page
+        setConnectedAccount(accounts[0]);
+        localStorage.setItem("userAddress", accounts[0]);
+        window.location.href = "/home";
+      } catch (e) {
+        console.log(e);
+      }
     } else {
       alert("Please download metamask");
     }

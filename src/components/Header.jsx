@@ -128,10 +128,7 @@ export default function Header() {
     }
   };
 
-  //check aut using userAddress in localStorage
-
   return (
-    // sticky top-0 z-50 (if i ever want it to be sticky)
     <header className=" bg-secondary">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
@@ -230,10 +227,16 @@ export default function Header() {
             </Transition>
           </Popover>
           <a
-            href="#"
+            href="/cart"
             className="text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100"
           >
             Cart
+          </a>
+          <a
+            href="#"
+            className="text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100"
+          >
+            My Games
           </a>
         </Popover.Group>
 
@@ -274,7 +277,7 @@ export default function Header() {
               <button
                 className="btn btn-error text-white"
                 onClick={() => {
-                  localStorage.removeItem("userAddress");
+                  localStorage.clear();
                   window.location.href = "/home";
                 }}
               >
@@ -343,10 +346,16 @@ export default function Header() {
                 </Disclosure>
 
                 <a
-                  href="#"
+                  href="/cart"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
                 >
                   Cart
+                </a>
+                <a
+                  href="#"
+                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
+                >
+                  My Games
                 </a>
               </div>
 
@@ -369,7 +378,7 @@ export default function Header() {
                 ) : (
                   <a
                     onClick={() => {
-                      localStorage.removeItem("userAddress");
+                      localStorage.clear();
                       window.location.href = "/home";
                     }}
                     className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
