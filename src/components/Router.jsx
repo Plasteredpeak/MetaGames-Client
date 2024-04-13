@@ -6,6 +6,7 @@ import SignUp from "../pages/Auth/SignUp";
 import Login from "../pages/Auth/Login";
 import Category from "../pages/CategoryPage";
 import Cart from "../pages/Cart";
+import MyGames from "../pages/MyGames";
 
 const categories = [
   "action",
@@ -33,6 +34,7 @@ const routes = [
   { path: "/home", element: <Home /> },
   { path: "/game/:id", element: <GamePage /> },
   { path: "/cart", element: <Cart /> },
+  { path: "/my-games", element: <MyGames /> },
   ...categories.map((category) => ({
     path: `/game/${category}`,
     element: <Category genre={category} />,

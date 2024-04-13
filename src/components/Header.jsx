@@ -261,7 +261,7 @@ export default function Header() {
             )}
           </a>
           <a
-            href="#"
+            href="/my-games"
             className="text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100"
           >
             My Games
@@ -380,7 +380,7 @@ export default function Header() {
                   Cart
                 </a>
                 <a
-                  href="#"
+                  href="/my-games"
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
                 >
                   My Games
