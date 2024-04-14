@@ -167,17 +167,9 @@ export default function Header() {
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
       >
-        <div className="max-h-[10vh flex lg:flex-1">
-          <a href="/home" className="-m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
-
-            <img
-              className="rounded-sm"
-              src={Logo}
-              alt=""
-              height={80}
-              width={80}
-            />
+        <div className="flex max-h-[10vh] lg:flex-1">
+          <a href="/home">
+            <img className="rounded-sm" src={Logo} alt="" width={80} />
           </a>
         </div>
         <div className="flex lg:hidden">
