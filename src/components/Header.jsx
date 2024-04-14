@@ -175,8 +175,8 @@ export default function Header() {
               className="rounded-sm"
               src={Logo}
               alt=""
-              height={100}
-              width={100}
+              height={80}
+              width={80}
             />
           </a>
         </div>
