@@ -98,8 +98,8 @@ const items = [
 ];
 
 const callsToAction = [
-  { name: "Watch demo", href: "#", icon: PlayCircleIcon },
-  { name: "Contact sales", href: "#", icon: PhoneIcon },
+  // { name: "Watch demo", href: "#", icon: PlayCircleIcon },
+  // { name: "Contact sales", href: "#", icon: PhoneIcon },
 ];
 
 function classNames(...classes) {
