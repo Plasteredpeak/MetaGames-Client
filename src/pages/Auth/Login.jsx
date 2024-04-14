@@ -52,7 +52,7 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-[80vh] flex-col items-center justify-center">
+    <div className="flex min-h-[90vh] flex-col items-center justify-center">
       <div
         role="alert"
         className={`alert alert-success my-3 w-1/3 ${connectedAccount ? "" : "hidden"}`}

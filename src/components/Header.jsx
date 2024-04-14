@@ -111,6 +111,7 @@ export default function Header() {
   const [connectedAccount, setConnectedAccount] = useState(false);
   const [user, setUser] = useState(null);
   const [cartHasItems, setCartHasItems] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -161,14 +162,19 @@ export default function Header() {
     }
   };
 
+  const handleNavigation = (path) => {
+    navigate(path);
+    setMobileMenuOpen(false);
+  };
+
   return (
     <header className=" bg-secondary">
       <nav
         className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
         aria-label="Global"
       >
-        <div className="flex max-h-[10vh] lg:flex-1">
-          <a href="/home">
+        <div className="flex max-h-[10vh] cursor-pointer lg:flex-1">
+          <a onClick={() => handleNavigation("/home")}>
             <img className="rounded-sm" src={Logo} alt="" width={80} />
           </a>
         </div>
@@ -184,8 +190,8 @@ export default function Header() {
         </div>
         <Popover.Group className="hidden lg:flex lg:gap-x-12">
           <a
-            href="/home"
-            className="text-sm font-semibold leading-6 text-gray-300  hover:text-gray-100"
+            onClick={() => handleNavigation("/home")}
+            className="cursor-pointer text-sm font-semibold leading-6  text-gray-300 hover:text-gray-100"
           >
             Home
           </a>
@@ -222,8 +228,8 @@ export default function Header() {
                       </div>
                       <div className="flex-auto">
                         <a
-                          href={item.href}
-                          className="block font-semibold text-gray-300"
+                          onClick={() => handleNavigation(item.href)}
+                          className="block cursor-pointer font-semibold text-gray-300"
                         >
                           {item.name}
                           <span className="absolute inset-0" />
@@ -237,8 +243,8 @@ export default function Header() {
                   {callsToAction.map((item) => (
                     <a
                       key={item.name}
-                      href={item.href}
-                      className="flex items-center justify-center gap-x-2.5 rounded-lg p-3 text-sm font-semibold leading-6 text-gray-300 hover:bg-gray-600"
+                      onClick={() => handleNavigation(item.href)}
+                      className="flex cursor-pointer items-center justify-center gap-x-2.5 rounded-lg p-3 text-sm font-semibold leading-6 text-gray-300 hover:bg-gray-600"
                     >
                       <item.icon
                         className="h-5 w-5 flex-none text-gray-400"
@@ -252,8 +258,8 @@ export default function Header() {
             </Transition>
           </Popover>
           <a
-            href="/cart"
-            className=" relative text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100"
+            onClick={() => handleNavigation("/cart")}
+            className="relative cursor-pointer text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100"
           >
             Cart
             {cartHasItems && (
@@ -261,8 +267,8 @@ export default function Header() {
             )}
           </a>
           <a
-            href="/my-games"
-            className="text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100"
+            onClick={() => handleNavigation("/my-games")}
+            className="cursor-pointer text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100"
           >
             My Games
           </a>
@@ -271,10 +277,13 @@ export default function Header() {
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
           {!connectedAccount ? (
             <>
-              <a href="/login" className="btn">
+              <a onClick={() => handleNavigation("/login")} className="btn">
                 Log in
               </a>
-              <a href="/signup" className="btn btn-accent ml-3">
+              <a
+                onClick={() => handleNavigation("/signup")}
+                className="btn btn-accent ml-3"
+              >
                 Sign up
               </a>
             </>
@@ -306,7 +315,8 @@ export default function Header() {
                 className="btn btn-error text-white"
                 onClick={() => {
                   localStorage.clear();
-                  window.location.href = "/home";
+                  setConnectedAccount(false);
+                  handleNavigation("/home");
                 }}
               >
                 Log out
@@ -339,8 +349,8 @@ export default function Header() {
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
                 <a
-                  href="/home"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
+                  onClick={() => handleNavigation("/home")}
+                  className="-mx-3 block cursor-pointer rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
                 >
                   Home
                 </a>
@@ -362,8 +372,8 @@ export default function Header() {
                           <Disclosure.Button
                             key={item.name}
                             as="a"
-                            href={item.href}
-                            className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-300 hover:bg-gray-700"
+                            onClick={() => handleNavigation(item.href)}
+                            className="block cursor-pointer rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-300 hover:bg-gray-700"
                           >
                             {item.name}
                           </Disclosure.Button>
@@ -374,14 +384,14 @@ export default function Header() {
                 </Disclosure>
 
                 <a
-                  href="/cart"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
+                  onClick={() => handleNavigation("/cart")}
+                  className="-mx-3 block cursor-pointer rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
                 >
                   Cart
                 </a>
                 <a
-                  href="/my-games"
-                  className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
+                  onClick={() => handleNavigation("/my-games")}
+                  className="-mx-3 block cursor-pointer rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
                 >
                   My Games
                 </a>
@@ -391,14 +401,14 @@ export default function Header() {
                 {!connectedAccount ? (
                   <>
                     <a
-                      href="/login"
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
+                      onClick={() => handleNavigation("/login")}
+                      className="-mx-3 block cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
                     >
                       Log in
                     </a>
                     <a
-                      href="/signup"
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
+                      onClick={() => handleNavigation("/signup")}
+                      className="-mx-3 block cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
                     >
                       Sign up
                     </a>
@@ -407,9 +417,10 @@ export default function Header() {
                   <a
                     onClick={() => {
                       localStorage.clear();
-                      window.location.href = "/home";
+                      setConnectedAccount(false);
+                      handleNavigation("/home");
                     }}
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
+                    className="-mx-3 block cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
                   >
                     Log out
                   </a>
