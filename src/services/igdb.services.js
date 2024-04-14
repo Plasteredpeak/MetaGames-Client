@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const getGames = async (next) => {
+  console.log("fetching games from", backendUrl);
   try {
     if (next) {
       const response = await axios.get(next);
