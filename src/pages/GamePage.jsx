@@ -65,7 +65,6 @@ const GamePage = () => {
     const accounts = await web3.eth.getAccounts();
     const games = await contract.methods.getGamesByOwner(accounts[0]).call();
     const gamesArray = games[0];
-    console.log(gamesArray, game.id, gamesArray.includes(game.id));
     const isGameAlreadyPurchased = gamesArray.includes(game.id.toString());
     setAlreadyPurchased(isGameAlreadyPurchased);
   };

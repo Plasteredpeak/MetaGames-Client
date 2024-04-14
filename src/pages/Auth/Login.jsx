@@ -12,6 +12,22 @@ const Login = () => {
   const [connectedAccount, setConnectedAccount] = useState();
   const navigate = useNavigate();
 
+  //check if metamask is connected
+  useEffect(() => {
+    if (window.ethereum) {
+      window.ethereum.on("accountsChanged", function (accounts) {
+        if (accounts.length > 0) {
+          setConnectedAccount(accounts[0]);
+          localStorage.setItem("userAddress", accounts[0]);
+          window.dispatchEvent(new Event("login"));
+          navigate("/");
+        } else {
+          localStorage.removeItem("userAddress");
+        }
+      });
+    }
+  }, []);
+
   const connectToMetaMask = async (event) => {
     event.preventDefault(); // Prevent form submission
 
@@ -26,16 +42,11 @@ const Login = () => {
         //get the connected accounts
         const accounts = await web3.eth.getAccounts();
 
-        console.log(accounts[0]);
-
         //show the first connected account in the react page
         setConnectedAccount(accounts[0]);
         localStorage.setItem("userAddress", accounts[0]);
       } catch (e) {
         console.log(e);
-      } finally {
-        window.dispatchEvent(new Event("login"));
-        navigate("/");
       }
     } else {
       alert("Please download metamask");

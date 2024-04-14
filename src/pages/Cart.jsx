@@ -129,7 +129,6 @@ const Cart = () => {
             .send({
               from: account,
             });
-          console.log(game.id);
           removeFromCart(game.id);
           toast.success(`Game ${game.id} added successfully`);
         } catch (error) {

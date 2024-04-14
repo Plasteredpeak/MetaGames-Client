@@ -125,7 +125,6 @@ export default function Header() {
     const handleCartUpdate = () => {
       if (localStorage.getItem("cart")) {
         const cart = JSON.parse(localStorage.getItem("cart"));
-        console.log(cart.length);
         if (cart.length > 0) {
           setCartHasItems(true);
         } else {

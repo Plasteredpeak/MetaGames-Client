@@ -4,11 +4,9 @@ import { toast } from "react-toastify";
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 export const getGames = async (next) => {
-  console.log("fetching games from", backendUrl);
   try {
     if (next) {
       const response = await axios.get(next);
-      console.log(response.data);
       return response.data;
     }
     const response = await axios.get(`${backendUrl}/games`);
@@ -31,7 +29,6 @@ export const getGamesByGenre = async (genre) => {
 
 export const searchGamesByGenre = async (genre, queryString) => {
   try {
-    console.log("searching for games", queryString);
     const response = await axios.get(
       `${backendUrl}/games?genres=${genre}&search=${queryString}`,
     );
@@ -54,7 +51,6 @@ export const getGenres = async () => {
 
 export const searchGames = async (queryString) => {
   try {
-    console.log("searching for games", queryString);
     const response = await axios.get(
       `${backendUrl}/games?search=${queryString}`,
     );
