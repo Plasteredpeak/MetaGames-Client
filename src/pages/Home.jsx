@@ -71,7 +71,7 @@ export default function Home() {
         ) : games?.length === 0 ||
           games?.results === undefined ||
           games?.results.length === 0 ? (
-          <div className="flex h-48 items-center justify-center">
+          <div className="col-span-4 flex h-48 items-center justify-center">
             <p>No games found.</p>
           </div>
         ) : (
