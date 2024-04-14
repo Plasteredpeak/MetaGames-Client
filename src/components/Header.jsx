@@ -139,6 +139,10 @@ export default function Header() {
     // Listen for custom event
     window.addEventListener("cartUpdated", handleCartUpdate);
 
+    window.addEventListener("login", () => {
+      setConnectedAccount(true);
+    });
+
     // Cleanup event listener
     return () => {
       window.removeEventListener("cartUpdated", handleCartUpdate);

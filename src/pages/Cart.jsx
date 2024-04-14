@@ -59,6 +59,10 @@ const Cart = () => {
     const updatedCart = cart.filter((game) => game.id !== id);
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+    if (updatedCart.length === 0) {
+      window.dispatchEvent(new Event("cartUpdated"));
+    }
   };
 
   useEffect(() => {

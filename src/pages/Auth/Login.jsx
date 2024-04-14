@@ -6,26 +6,15 @@ import { MdEmail } from "react-icons/md";
 import metaMask from "../../assets/metaMask.svg";
 import Logo from "../../assets/wLogo.png";
 import { CiCircleCheck } from "react-icons/ci";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [connectedAccount, setConnectedAccount] = useState();
+  const navigate = useNavigate();
 
-  //check if metamask is connected
-  useEffect(() => {
-    if (window.ethereum) {
-      window.ethereum.on("accountsChanged", function (accounts) {
-        if (accounts.length > 0) {
-          setConnectedAccount(accounts[0]);
-          localStorage.setItem("userAddress", accounts[0]);
-          window.location.href = "/home";
-        } else {
-          localStorage.removeItem("userAddress");
-        }
-      });
-    }
-  }, []);
+  const connectToMetaMask = async (event) => {
+    event.preventDefault(); // Prevent form submission
 
-  const connectToMetaMask = async () => {
     if (window.ethereum) {
       try {
         // instantiate Web3 with the injected provider
@@ -42,9 +31,11 @@ const Login = () => {
         //show the first connected account in the react page
         setConnectedAccount(accounts[0]);
         localStorage.setItem("userAddress", accounts[0]);
-        window.location.href = "/home";
       } catch (e) {
         console.log(e);
+      } finally {
+        window.dispatchEvent(new Event("login"));
+        navigate("/");
       }
     } else {
       alert("Please download metamask");
