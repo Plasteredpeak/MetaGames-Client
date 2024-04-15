@@ -31,8 +31,10 @@ const MyGames = () => {
     const gamesArray = games[0];
     const gamesInfo = [];
     for (const gameId of gamesArray) {
-      const game = await getGameById(gameId);
-      gamesInfo.push(game);
+      if (!gamesInfo.some((game) => game.id == gameId)) {
+        const game = await getGameById(gameId);
+        gamesInfo.push(game);
+      }
     }
 
     setGames(gamesInfo);

@@ -117,7 +117,6 @@ export default function Header() {
 
   useEffect(() => {
     if (localStorage.getItem("userAddress")) {
-      ("im in header useeffect");
       setConnectedAccount(true);
       userBalance();
     }
@@ -163,7 +162,7 @@ export default function Header() {
         setUser({ address: accounts[0], balance: balanceInEther });
       }
     } catch (e) {
-      localStorage.removeItem("userAddress");
+      localStorage.clear();
       setConnectedAccount(false);
     }
   };

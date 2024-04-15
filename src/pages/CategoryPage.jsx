@@ -97,7 +97,7 @@ export default function Category(params) {
             className="btn btn-outline btn-secondary"
             onClick={() => fetchMoreGames()}
           >
-            {bottomLoading && <span class="loading loading-spinner"></span>}
+            {bottomLoading && <span className="loading loading-spinner"></span>}
             Load More
           </button>
         </div>

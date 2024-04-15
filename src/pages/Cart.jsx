@@ -51,9 +51,9 @@ const Cart = () => {
   };
 
   const calculatePrice = (playtime, rating) => {
-    const basePricePerHour = 0.01;
-    const playtimeFactor = Math.floor(playtime * basePricePerHour);
-    const ratingFactor = Math.floor(rating * (basePricePerHour * 100));
+    const basePricePerHour = 0.05;
+    const playtimeFactor = Math.floor(playtime * (basePricePerHour * 10));
+    const ratingFactor = Math.floor(rating * (basePricePerHour * 50));
     const totalPrice = playtimeFactor + ratingFactor;
     return totalPrice;
   };
@@ -78,7 +78,7 @@ const Cart = () => {
       total += game.price;
     });
 
-    setTotal(parseFloat(total.toFixed(2)));
+    setTotal(total);
   }, [cart]);
 
   const getPayment = async () => {
@@ -132,12 +132,15 @@ const Cart = () => {
               from: account,
             });
           removeFromCart(game.id);
-          toast.success(`Game ${game.id} added successfully`);
         } catch (error) {
           console.error(`Failed to add game ${game.id}:`, error);
           toast.error(`Failed to add game ${game.id}`);
         }
       }
+
+      toast.success("Games purchased successfully");
+      localStorage.setItem("cart", JSON.stringify([]));
+      setCart([]);
 
       window.dispatchEvent(new Event("login"));
     } catch (error) {
@@ -183,7 +186,7 @@ const Cart = () => {
                         {game.rating}
                       </td>
                       <td className="border px-4 py-2 text-center">
-                        {game.price} ETH
+                        {game.price} GT
                       </td>
                       <td className="border px-4 py-2 text-center">
                         <button
@@ -202,9 +205,7 @@ const Cart = () => {
                     <td colSpan="4" className="border px-4 py-2 text-right">
                       Total
                     </td>
-                    <td className="border px-4 py-2 text-center">
-                      {total} ETH
-                    </td>
+                    <td className="border px-4 py-2 text-center">{total} GT</td>
                   </tr>
                 </tfoot>
               </table>
