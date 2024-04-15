@@ -8,6 +8,7 @@ const Cart = () => {
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [freeTokens, setFreeTokens] = useState(false);
 
   useEffect(() => {
     window.dispatchEvent(new Event("cartAccessed"));
@@ -29,6 +30,8 @@ const Cart = () => {
       });
 
       toast.success("You have received a 100 GT tokens. ");
+      setFreeTokens(true);
+      window.dispatchEvent(new Event("login"));
     } catch (error) {
       console.error("Failed to enable Ethereum:", error);
       toast.error("Failed to enable Ethereum");
@@ -93,11 +96,10 @@ const Cart = () => {
           from: accounts[0],
         });
 
-        await contract.methods.toast.success(
-          `Payment of ${total} GT tokens successful`,
-        );
+        toast.success(`Payment of ${total} GT tokens successful`);
         return true;
       } catch (error) {
+        console.log("Failed to enable Ethereum:", error);
         return false;
       }
     }
@@ -137,10 +139,12 @@ const Cart = () => {
         }
       }
 
-      setLoading(false);
+      window.dispatchEvent(new Event("login"));
     } catch (error) {
       console.error("Failed to enable Ethereum:", error);
       toast.error("Failed to enable Ethereum");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -205,14 +209,19 @@ const Cart = () => {
                 </tfoot>
               </table>
             </div>
-            <div className="flex w-full justify-center">
+            <div
+              className={`flex w-full justify-center ${freeTokens ? "disabled" : ""}`}
+            >
               <button
                 className="btn btn-secondary mr-2 mt-4"
                 onClick={addTokens}
               >
                 Get Free Tokens
               </button>
-              <button className="btn btn-primary mt-4" onClick={buyGame}>
+              <button
+                className={`btn btn-primary mt-4 ${loading ? "disabled" : ""}`}
+                onClick={buyGame}
+              >
                 {loading && <span className="loading loading-spinner"></span>}
                 Buy Games
               </button>
