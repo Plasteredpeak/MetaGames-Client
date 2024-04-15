@@ -111,11 +111,13 @@ export default function Header() {
   const [connectedAccount, setConnectedAccount] = useState(false);
   const [user, setUser] = useState(null);
   const [cartHasItems, setCartHasItems] = useState(false);
+  const [cartAccessed, setCartAccessed] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (localStorage.getItem("userAddress")) {
+      ("im in header useeffect");
       setConnectedAccount(true);
       userBalance();
     }
@@ -123,13 +125,9 @@ export default function Header() {
 
   useEffect(() => {
     const handleCartUpdate = () => {
-      if (localStorage.getItem("cart")) {
-        const cart = JSON.parse(localStorage.getItem("cart"));
-        if (cart.length > 0) {
-          setCartHasItems(true);
-        } else {
-          setCartHasItems(false);
-        }
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      if (cart.length > 0) {
+        setCartHasItems(true);
       } else {
         setCartHasItems(false);
       }
@@ -138,30 +136,35 @@ export default function Header() {
     // Listen for custom event
     window.addEventListener("cartUpdated", handleCartUpdate);
 
-    window.addEventListener("login", () => {
-      setConnectedAccount(true);
+    window.addEventListener("cartAccessed", () => {
+      setCartAccessed(true);
     });
 
-    // Cleanup event listener
-    return () => {
-      window.removeEventListener("cartUpdated", handleCartUpdate);
-    };
+    window.addEventListener("login", () => {
+      setConnectedAccount(true);
+      userBalance();
+    });
   }, []);
 
   const userBalance = async () => {
-    if (window.ethereum) {
-      const web3 = new Web3(window.ethereum);
-      const accounts = await web3.eth.getAccounts();
+    try {
+      if (window.ethereum) {
+        const web3 = new Web3(window.ethereum);
+        const accounts = await web3.eth.getAccounts();
 
-      const contractAddress = import.meta.env.VITE_TOKEN_CONTRACT_ADDRESS;
+        const contractAddress = import.meta.env.VITE_TOKEN_CONTRACT_ADDRESS;
 
-      const contract = new web3.eth.Contract(tokenABI, contractAddress);
+        const contract = new web3.eth.Contract(tokenABI, contractAddress);
 
-      const balance = await contract.methods.balanceOf(accounts[0]).call();
+        const balance = await contract.methods.balanceOf(accounts[0]).call();
 
-      const balanceInEther = web3.utils.fromWei(balance, "ether");
+        const balanceInEther = web3.utils.fromWei(balance, "ether");
 
-      setUser({ address: accounts[0], balance: balanceInEther });
+        setUser({ address: accounts[0], balance: balanceInEther });
+      }
+    } catch (e) {
+      localStorage.removeItem("userAddress");
+      setConnectedAccount(false);
     }
   };
 
@@ -265,7 +268,7 @@ export default function Header() {
             className="relative cursor-pointer text-sm font-semibold leading-6 text-gray-300 hover:text-gray-100"
           >
             Cart
-            {cartHasItems && (
+            {cartHasItems && !cartAccessed && (
               <span className="absolute right-0 top-0 -mr-2 h-2 w-2 animate-pulse  rounded-full bg-red-500"></span>
             )}
           </a>
@@ -319,6 +322,7 @@ export default function Header() {
                 onClick={() => {
                   localStorage.clear();
                   setConnectedAccount(false);
+                  window.dispatchEvent(new Event("cartUpdated"));
                   handleNavigation("/home");
                 }}
               >
@@ -421,6 +425,7 @@ export default function Header() {
                     onClick={() => {
                       localStorage.clear();
                       setConnectedAccount(false);
+                      window.dispatchEvent(new Event("cartUpdated"));
                       handleNavigation("/home");
                     }}
                     className="-mx-3 block cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"

@@ -45,6 +45,8 @@ const Login = () => {
         //show the first connected account in the react page
         setConnectedAccount(accounts[0]);
         localStorage.setItem("userAddress", accounts[0]);
+        window.dispatchEvent(new Event("login"));
+        navigate("/");
       } catch (e) {
         console.log(e);
       }

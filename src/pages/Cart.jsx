@@ -9,6 +9,10 @@ const Cart = () => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    window.dispatchEvent(new Event("cartAccessed"));
+  }, []);
+
   const addTokens = async () => {
     if (window.ethereum) {
       try {
