@@ -14,28 +14,24 @@ const Cart = () => {
   }, []);
 
   const addTokens = async () => {
-    if (window.ethereum) {
-      try {
-        const web3 = new Web3(window.ethereum);
-        const accounts = await web3.eth.getAccounts();
+    try {
+      const web3 = new Web3(window.ethereum);
+      const accounts = await ethereum.request({
+        method: "eth_requestAccounts",
+      });
 
-        const contractAddress = import.meta.env.VITE_TOKEN_CONTRACT_ADDRESS;
-        const ownerAddress = import.meta.env.VITE_OWNER_ADDRESS;
+      const contractAddress = import.meta.env.VITE_TOKEN_CONTRACT_ADDRESS;
 
-        const contract = new web3.eth.Contract(tokenABI, contractAddress);
+      const contract = new web3.eth.Contract(tokenABI, contractAddress);
 
-        //transfer 100 tokens to the user from the owner
-        await contract.methods
-          .transferTokens(ownerAddress, accounts[0], 100)
-          .send({
-            from: ownerAddress,
-          });
+      await contract.methods.requestTokens(100).send({
+        from: accounts[0],
+      });
 
-        toast.success("You have received a 100 GT tokens. ");
-      } catch (error) {
-        console.error("Failed to enable Ethereum:", error);
-        toast.error("Failed to enable Ethereum");
-      }
+      toast.success("You have received a 100 GT tokens. ");
+    } catch (error) {
+      console.error("Failed to enable Ethereum:", error);
+      toast.error("Failed to enable Ethereum");
     }
   };
 
@@ -89,17 +85,17 @@ const Cart = () => {
         const accounts = await web3.eth.getAccounts();
 
         const contractAddress = import.meta.env.VITE_TOKEN_CONTRACT_ADDRESS;
-        const ownerAddress = import.meta.env.VITE_OWNER_ADDRESS;
 
         const contract = new web3.eth.Contract(tokenABI, contractAddress);
 
-        await contract.methods
-          .transferTokens(accounts[0], ownerAddress, total)
-          .send({
-            from: accounts[0],
-          });
+        //transfer tokens to the owner
+        await contract.methods.transferTokens(total).send({
+          from: accounts[0],
+        });
 
-        toast.success(`Payment of ${total} GT tokens successful`);
+        await contract.methods.toast.success(
+          `Payment of ${total} GT tokens successful`,
+        );
         return true;
       } catch (error) {
         return false;

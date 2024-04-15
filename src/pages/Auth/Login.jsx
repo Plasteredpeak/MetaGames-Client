@@ -7,6 +7,7 @@ import metaMask from "../../assets/metaMask.svg";
 import Logo from "../../assets/wLogo.png";
 import { CiCircleCheck } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [connectedAccount, setConnectedAccount] = useState();
@@ -48,10 +49,10 @@ const Login = () => {
         window.dispatchEvent(new Event("login"));
         navigate("/");
       } catch (e) {
-        console.log(e);
+        toast.error("error connecting to metamask");
       }
     } else {
-      alert("Please download metamask");
+      toast.error("Metamask not installed");
     }
   };
 
