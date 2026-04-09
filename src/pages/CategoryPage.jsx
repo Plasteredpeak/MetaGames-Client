@@ -35,7 +35,9 @@ export default function Category(params) {
     const search = async () => {
       setIsLoading(true);
       if (searchQuery === "") {
-        fetchGames();
+        const gameResults = await getGamesByGenre(params.genre);
+        setGames(gameResults);
+        setIsLoading(false);
       } else {
         const searchResults = await searchGamesByGenre(
           params.genre,
@@ -49,7 +51,7 @@ export default function Category(params) {
     const timeoutId = setTimeout(search, 1000);
 
     return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+  }, [params.genre, searchQuery]);
 
   return (
     <div className="mx-8 my-4">
