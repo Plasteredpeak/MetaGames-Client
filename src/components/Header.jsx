@@ -20,6 +20,12 @@ import {
   PlayCircleIcon,
 } from "@heroicons/react/20/solid";
 import { tokenABI } from "../utils/contract.abi";
+import {
+  isGuestModeEnabled,
+  isGuestSessionActive,
+  markGuestLoggedOut,
+  readDemoTokenBalance,
+} from "../services/guestMode";
 
 const items = [
   {
@@ -118,7 +124,11 @@ export default function Header() {
   useEffect(() => {
     if (localStorage.getItem("userAddress")) {
       setConnectedAccount(true);
-      userBalance();
+      if (isGuestSessionActive()) {
+        setUser({ address: "guest", balance: readDemoTokenBalance() });
+      } else {
+        userBalance();
+      }
     }
   }, []);
 
@@ -132,21 +142,41 @@ export default function Header() {
       }
     };
 
+    const handleCartAccessed = () => {
+      setCartAccessed(true);
+    };
+
+    const handleLogin = () => {
+      setConnectedAccount(true);
+      if (isGuestSessionActive()) {
+        setUser({ address: "guest", balance: readDemoTokenBalance() });
+      } else {
+        userBalance();
+      }
+    };
+
     // Listen for custom event
     window.addEventListener("cartUpdated", handleCartUpdate);
+    handleCartUpdate();
 
-    window.addEventListener("cartAccessed", () => {
-      setCartAccessed(true);
-    });
+    window.addEventListener("cartAccessed", handleCartAccessed);
 
-    window.addEventListener("login", () => {
-      setConnectedAccount(true);
-      userBalance();
-    });
+    window.addEventListener("login", handleLogin);
+
+    return () => {
+      window.removeEventListener("cartUpdated", handleCartUpdate);
+      window.removeEventListener("cartAccessed", handleCartAccessed);
+      window.removeEventListener("login", handleLogin);
+    };
   }, []);
 
   const userBalance = async () => {
     try {
+      if (isGuestSessionActive()) {
+        setUser({ address: "guest", balance: readDemoTokenBalance() });
+        return;
+      }
+
       if (window.ethereum) {
         const web3 = new Web3(window.ethereum);
         const accounts = await web3.eth.getAccounts();
@@ -165,6 +195,19 @@ export default function Header() {
       localStorage.clear();
       setConnectedAccount(false);
     }
+  };
+
+  const handleLogout = () => {
+    if (isGuestModeEnabled() && isGuestSessionActive()) {
+      markGuestLoggedOut();
+    } else {
+      localStorage.clear();
+    }
+
+    setConnectedAccount(false);
+    setUser(null);
+    window.dispatchEvent(new Event("cartUpdated"));
+    handleNavigation("/home");
   };
 
   const handleNavigation = (path) => {
@@ -318,12 +361,7 @@ export default function Header() {
               </div>
               <button
                 className="btn btn-error text-white"
-                onClick={() => {
-                  localStorage.clear();
-                  setConnectedAccount(false);
-                  window.dispatchEvent(new Event("cartUpdated"));
-                  handleNavigation("/home");
-                }}
+                onClick={handleLogout}
               >
                 Log out
               </button>
@@ -421,12 +459,7 @@ export default function Header() {
                   </>
                 ) : (
                   <a
-                    onClick={() => {
-                      localStorage.clear();
-                      setConnectedAccount(false);
-                      window.dispatchEvent(new Event("cartUpdated"));
-                      handleNavigation("/home");
-                    }}
+                    onClick={handleLogout}
                     className="-mx-3 block cursor-pointer rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-300 hover:bg-gray-700"
                   >
                     Log out

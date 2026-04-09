@@ -7,6 +7,11 @@ import Web3 from "web3";
 
 import { getGameById } from "../services/igdb.services";
 import { gameABI } from "../utils/contract.abi";
+import {
+  isGuestModeEnabled,
+  isGuestSessionActive,
+  readDemoOwnedGameIds,
+} from "../services/guestMode";
 
 const contractAddress = import.meta.env.VITE_GAME_CONTRACT_ADDRESS;
 
@@ -14,6 +19,22 @@ const MyGames = () => {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(false);
   const [checkLogin, setCheckLogin] = useState(false);
+
+  const getGamesFromGuest = async () => {
+    setLoading(true);
+    const gameIds = readDemoOwnedGameIds();
+    const gamesInfo = [];
+
+    for (const gameId of gameIds) {
+      const game = await getGameById(gameId);
+      if (game && !gamesInfo.some((item) => String(item.id) === String(game.id))) {
+        gamesInfo.push(game);
+      }
+    }
+
+    setGames(gamesInfo);
+    setLoading(false);
+  };
 
   const getGamesFromBlockchain = async () => {
     setLoading(true);
@@ -44,7 +65,12 @@ const MyGames = () => {
   useEffect(() => {
     if (localStorage.getItem("userAddress")) {
       setCheckLogin(true);
-      getGamesFromBlockchain();
+
+      if (isGuestModeEnabled() && isGuestSessionActive()) {
+        getGamesFromGuest();
+      } else {
+        getGamesFromBlockchain();
+      }
     }
   }, []);
 

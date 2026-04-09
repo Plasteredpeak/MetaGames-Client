@@ -3,6 +3,13 @@ import { FaTrashAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 import Web3 from "web3";
 import { gameABI, tokenABI } from "../utils/contract.abi";
+import {
+  addDemoOwnedGameIds,
+  isGuestModeEnabled,
+  isGuestSessionActive,
+  readDemoTokenBalance,
+  writeDemoTokenBalance,
+} from "../services/guestMode";
 
 const Cart = () => {
   const [cart, setCart] = useState([]);
@@ -14,7 +21,18 @@ const Cart = () => {
     window.dispatchEvent(new Event("cartAccessed"));
   }, []);
 
+  const inGuestMode = isGuestModeEnabled() && isGuestSessionActive();
+
   const addTokens = async () => {
+    if (inGuestMode) {
+      const currentBalance = readDemoTokenBalance();
+      writeDemoTokenBalance(currentBalance + 100);
+      toast.success("You have received 100 GT demo tokens.");
+      setFreeTokens(true);
+      window.dispatchEvent(new Event("login"));
+      return;
+    }
+
     try {
       const web3 = new Web3(window.ethereum);
       const accounts = await ethereum.request({
@@ -82,6 +100,19 @@ const Cart = () => {
   }, [cart]);
 
   const getPayment = async () => {
+    if (inGuestMode) {
+      const currentBalance = readDemoTokenBalance();
+
+      if (currentBalance < total) {
+        toast.error("Not enough demo tokens. Get free tokens first.");
+        return false;
+      }
+
+      writeDemoTokenBalance(currentBalance - total);
+      toast.success(`Payment of ${total} GT demo tokens successful`);
+      return true;
+    }
+
     if (window.ethereum) {
       try {
         const web3 = new Web3(window.ethereum);
@@ -107,6 +138,31 @@ const Cart = () => {
 
   const buyGame = async () => {
     setLoading(true);
+
+    if (inGuestMode) {
+      try {
+        const paid = await getPayment();
+        if (!paid) {
+          setLoading(false);
+          return;
+        }
+
+        addDemoOwnedGameIds(cart.map((game) => game.id));
+        localStorage.setItem("cart", JSON.stringify([]));
+        setCart([]);
+
+        toast.success("Games purchased successfully (guest mode)");
+        window.dispatchEvent(new Event("login"));
+      } catch (error) {
+        console.error("Failed guest purchase:", error);
+        toast.error("Failed guest purchase");
+      } finally {
+        setLoading(false);
+      }
+
+      return;
+    }
+
     const web3 = new Web3(window.ethereum);
     try {
       const paid = await getPayment();

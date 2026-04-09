@@ -13,6 +13,11 @@ import Web3 from "web3";
 
 import { gameABI } from "../utils/contract.abi";
 import { RiListCheck3 } from "react-icons/ri";
+import {
+  isGuestModeEnabled,
+  isGuestSessionActive,
+  readDemoOwnedGameIds,
+} from "../services/guestMode";
 
 const GamePage = () => {
   const location = useLocation();
@@ -58,6 +63,15 @@ const GamePage = () => {
       setAlreadyPurchased(false);
       return;
     }
+
+    if (isGuestModeEnabled() && isGuestSessionActive()) {
+      const gameIds = readDemoOwnedGameIds();
+      setAlreadyPurchased(
+        gameIds.some((id) => String(id) === String(game.id)),
+      );
+      return;
+    }
+
     const web3 = new Web3(window.ethereum);
     await window.ethereum.request({ method: "eth_requestAccounts" });
     const contractAddress = import.meta.env.VITE_GAME_CONTRACT_ADDRESS;
